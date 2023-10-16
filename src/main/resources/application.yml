@@ -1,0 +1,88 @@
+# yml / yaml 配置文件的使用
+#server:
+#  port: 9000  # 把springboot内嵌的tomcat端口号由原来默认的 8080 改为 9000
+#  address: 127.0.0.1
+
+# 常见配置文件格式对比
+# 1. XML  配置臃肿
+#<server>
+#    <port>8080</port>
+#    <address>127.0.0.1</address>
+#</server>
+
+# 2. properties  层级结构不清晰
+#server.address=127.0.0.1
+#server.port=8080
+
+# 3. yml / yaml  这两种文件扩展名都可以
+#server:
+#  port: 8080
+#  address: 127.0.0.1
+# 基本语法：
+# 大小写敏感
+# 数值前面必须有空格，作为分隔符
+# 使用缩进表示层级关系，缩进时，不允许使用Tab键，只能用空格
+# 缩进的空格数目不重要，只要相同层级的元素左侧对齐即可
+# #表示注释，从这个字符一直到行尾，都会被解析器忽略
+
+# 层级关系明显，简洁、数据为中心 ---> 推荐使用
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/mybatis
+#    username: root
+#    password: twb
+
+
+# 定义对象/Map集合
+#user:
+#  name: bobo
+#  age: 20
+#  address: 苏州
+
+# 定义数组/ List / Set集合   hobby 数组/集合名   -元素值
+#hobby:
+#  -jack
+#  -playBasketball
+#  -game
+
+#spring系列配置
+spring:
+  #数据库配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver #驱动类名称
+    url: jdbc:mysql://localhost:3306/mybatis #数据库连接的url
+    username: root #连接数据库的用户名
+    password: twb #连接数据库的密码
+
+  #文件上传配置，在springboot中，文件上传，默认单个文件允许最大大小为 1M ，如果需要上传大文件，可以在 application.properties 文件中进行如下配置：
+  servlet:
+    multipart:
+      max-file-size: 10MB #配置单个文件最大上传大小
+      max-request-size: 100MB #配置单个请求最大上传大小(一次请求可以上传多个文件)
+
+
+#mybatis配置
+mybatis:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl #配置mybatis的日志, 指定输出到控制台
+    map-underscore-to-camel-case: true #开启mybatis的驼峰命名自动映射开关 a_column ------> aCloumn
+
+#自定义的阿里云OSS配置信息，这里的 key是自定义的  按住 Alt 键不放 同时按住鼠标左键往下拖动，这样光标就可以定位到多行输入，或者直接按住鼠标中间按钮往下拖动也可以
+# 本人的密钥信息如下：
+# AccessKeyID: LTAI5tGsMz9g82AHrvDDGWWv
+# AccessKey Secret: 8tlJqG7aV30JgaOZJV6iOOQENAwuUo
+# 由于properties配置文件中的信息本身就是一个字符串，所以这里的 key=value 不用加上双引号 ""，而且 = 号两边的空格也不需要
+aliyun:
+  oss:
+    endpoint: https://oss-cn-hangzhou.aliyuncs.com
+    accessKeyId: LTAI5tGsMz9g82AHrvDDGWWv
+    accessKeySecret: 8tlJqG7aV30JgaOZJV6iOOQENAwuUo
+    bucketName: bobo-tlias
+
+
+#开启spring事务管理日志
+logging:
+  level:
+    org.springframework.jdbc.support.JdbcTransactionManager: debug
+

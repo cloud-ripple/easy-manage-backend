@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.bobo.mapper.UserMapper">
+
+    <update id="update">
+        update user
+        <set>
+            <if test="nickname != null and  nickname!= ''">
+                nickname = #{nickname},
+            </if>
+            <if test="role != null and role != ''">
+                role = #{role},
+            </if>
+            <if test="age != null and age != ''">
+                age = #{age},
+            </if>
+            <if test="gender != null and gender != ''">
+                gender = #{gender},
+            </if>
+            <if test="phone != null and phone != ''">
+                phone = #{phone},
+            </if>
+            <if test="address != null and address != ''">
+                address = #{address},
+            </if>
+            <if test="email != null and email != ''">
+                email = #{email},
+            </if>
+            <if test="avatar != null and avatar != ''">
+                avatar = #{avatar},
+            </if>
+            <if test="password != null and password != ''">
+                password = md5(#{password}),
+            </if>
+
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteByIds">
+        delete from user
+        where id in
+        <foreach collection="ids" open="(" item="id" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <select id="getAllUsers" resultType="com.bobo.pojo.User">
+        select * from user
+        <where>
+            <if test="nickname != null and nickname != ''">
+                nickname like concat('%', #{nickname}, '%')
+            </if>
+            <if test="age != null and age != ''">
+                and age = #{age}
+            </if>
+            <if test="address != null and address != ''">
+                and address like concat('%', #{address}, '%')
+            </if>
+            <if test="role != null and role != ''">
+                and role = #{role}
+            </if>
+            <if test="gender != null and gender != ''">
+                and gender = #{gender}
+            </if>
+        </where>
+        order by register_date desc
+        limit #{startIndex}, #{pageSize};
+    </select>
+
+</mapper>
